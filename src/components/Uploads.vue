@@ -21,7 +21,6 @@ import pad from '../helpers/pad.js'
 export default {
 	data() {
 		return {
-			// overallProgress: 0,
 			interval: null,
 			secondsRemaining: 0
 		}
@@ -64,16 +63,15 @@ export default {
 			return pad.left('00', minutes) + ':' + pad.left('00', seconds);
 		},
 		overallProgress() {			
-			let totalProgress = 0
+			let totalBytes = 0
+			let loadedBytes = 0
 
 			this.unfinishedFiles.forEach(file => {
-				totalProgress += file.progress
+				totalBytes += file.totalBytes
+				loadedBytes += file.loadedBytes
 			})
 
-			if (this.unfinishedFiles.length === 0 && this.finishedFiles.length > 0) {
-				return 100
-			}
-				return parseInt(totalProgress / this.unfinishedFiles.length || 0)
+			return (loadedBytes / totalBytes) * 100
 		}
 	},
 
